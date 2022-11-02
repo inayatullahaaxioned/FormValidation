@@ -12,7 +12,71 @@
 <body>
   <!--container start-->
   <div class="container">
-    
+    <div class="wrapper">
+      <!-- form start here  -->
+      <div class="form-container">
+        <form action="#FIXME" id="form" method="get">
+          <div class="input-box">
+            <label class="label" for="firstname">First Name:</label>
+            <input class="input fname" type="text" name="firstname" id="firstname">
+          </div>
+          <div class="input-box">
+            <label class="label" for="lastname">Last Name:</label>
+            <input class="input lname" type="text" name="lastname" id="lastname">
+          </div>
+          <div class="input-box">
+            <label class="label">Gender:</label>
+            <div class="gender-btn">
+              <input type="radio" name="gender" id="male" value="Male">
+              <label for="male">Male</label>
+              <input type="radio" name="gender" id="female" value="Female">
+              <label for="female">Female</label>
+            </div>
+            <div class="input-box">
+              <label for="address">Address:</label>
+              <div class="textarea">
+                <textarea class="address input" name="address" id="address"></textarea>
+              </div>
+            </div>
+            <div class="input-box">
+              <input type="checkbox" name="checkbox" id="terms">
+              <label for="terms">Terms and Conditions</label>
+            </div>
+            <div class="buttons">
+              <input type="submit" title="Submit" value="Submit">
+              <input type="submit" title="Cancel" value="Cancel">
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- form end here  -->
+      <!-- display data start here  -->
+      <div class="display-data">
+        <ul class="table">
+          <li class="row">
+            <ul class="cols">
+              <li class="col">First Name</li>
+              <li class="col">Last Name</li>
+              <li class="col">Gender</li>
+              <li class="col">Address</li>
+              <li class="col">Edit</li>
+              <li class="col">Delete</li>
+            </ul>
+          </li>
+          <li class="row">
+            <ul class="cols">
+              <li class="col">Inayatullah</li>
+              <li class="col">Ansari</li>
+              <li class="col">Male</li>
+              <li class="col">123 Govandi</li>
+              <li class="col"><button class="edit-btn">Edit</button></li>
+              <li class="col"><button class="delete-btn">Delete</button></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- display data end here  -->
   </div>
   <!--container end-->
 
