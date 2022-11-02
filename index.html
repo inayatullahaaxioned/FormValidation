@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="en"> 
+<html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Form Validation</title>
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <link rel="stylesheet" media="screen" href="assets/css/style.css" >
+  <link rel="stylesheet" media="screen" href="assets/css/style.css">
 </head>
 
 <body>
@@ -18,11 +19,15 @@
         <form action="#FIXME" id="form" method="get">
           <div class="input-box">
             <label class="label" for="firstname">First Name:</label>
-            <input class="input fname" type="text" name="firstname" id="firstname">
+            <div class="input-wrap">
+              <input class="input fname" type="text" name="firstname" id="firstname">
+            </div>
           </div>
           <div class="input-box">
             <label class="label" for="lastname">Last Name:</label>
-            <input class="input lname" type="text" name="lastname" id="lastname">
+            <div class="input-wrap">
+              <input class="input lname" type="text" name="lastname" id="lastname">
+            </div>
           </div>
           <div class="input-box">
             <label class="label">Gender:</label>
@@ -35,7 +40,7 @@
           </div>
           <div class="input-box">
             <label class="label" for="address">Address:</label>
-            <div class="textarea">
+            <div class="input-wrap">
               <textarea class="address input" name="address" id="address" rows="8"></textarea>
             </div>
           </div>
@@ -64,10 +69,11 @@
         </ul>
       </div>
     </div>
-      <!-- form end here  -->
+    <!-- form end here  -->
   </div>
   <!--container end-->
 
-<script src="assets/js/script.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
+
 </html>
