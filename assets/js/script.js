@@ -15,6 +15,7 @@ var submitBtn = document.querySelector('.submit-btn'),
   cancelBtn = document.querySelector('.cancel-btn');
 //regex 
 var NameRegex = /^[A-Za-z]+$/;
+var AddressRegex = /^[a-z0-9 ,.'-]+$/i;
 
 form.addEventListener('submit', validateForm);
 
@@ -22,36 +23,62 @@ function validateForm(e) {
   e.preventDefault();
   if (firstname.value && lastname.value && (male.checked || female.checked) && address.value && checkbox.checked) {
     console.log('success');
+  } else {
+    console.log('error');
+    validateInput(firstname, NameRegex);
+    validateInput(lastname, NameRegex);
+    validateInput(address, AddressRegex);
+    validateGender(male);
+    validateCheckbox(checkbox);
   }
-  validateName(firstname);
+
 }
 
-function validateName(input, errorMsg, message) {
+function validateInput(input, regex) {
   var fname = input.value;
   var errorSpan = document.createElement('span');
-  errorSpan.classList.add('error');
-  var inputGroup = input.parentElement;
-  inputGroup.appendChild(errorSpan);
-  fail = document.querySelector(".fail")
-  if (fname == "") {
-    if (fail) {
-      errorSpan.classList.remove("fail")
-      errorSpan.classList.remove("error")
-    } else {
-      errorSpan.innerText = 'field is required';
-      errorSpan.classList.add("fail");
-
-    }
+  errorSpan.className = 'error';
+  var inputWrap = input.parentElement;
+  var error = inputWrap.querySelector('.error');
+  if (error) {
+    inputWrap.removeChild(error);
   }
-  else {
-    if (fail) {
-      errorSpan.classList.remove("fail")
-      errorSpan.classList.remove("error")
-    } else {
+  inputWrap.appendChild(errorSpan);
+  if (input.value == "") {
+    errorSpan.innerText = '*field is required';
+  } else if (fname.length < 4) {
+    errorSpan.innerText = "*It should have atleast 4 character";
+  } else if (regex.test(input.value) == false) {
+    errorSpan.innerText = "*Please enter valid " + input.name;
+  } else {
+    inputWrap.removeChild(errorSpan);
+  }
+}
 
-      inputBox.removeChild(fail)
-      errorSpan.classList.remove("fail");
-      errorSpan.classList.remove("error")
-    }
+function validateGender(input) {
+  var inputWrap = input.parentElement;
+  var error = inputWrap.querySelector('.error');
+  if (error) {
+    inputWrap.removeChild(error);
+  }
+  if (male.checked == false && female.checked == false) {
+    var errorSpan = document.createElement('span');
+    errorSpan.className = 'error';
+    inputWrap.appendChild(errorSpan);
+    errorSpan.innerText = "Please select your gender";
+  }
+}
+
+function validateCheckbox(input) {
+  var inputWrap = input.parentElement;
+  var error = inputWrap.querySelector('.error');
+  if (error) {
+    inputWrap.removeChild(error);
+  }
+  if (checkbox.checked == false) {
+    var errorSpan = document.createElement('span');
+    errorSpan.className = 'error';
+    inputWrap.appendChild(errorSpan);
+    errorSpan.innerText = "Please agree the Terms & Conditions";
   }
 }
