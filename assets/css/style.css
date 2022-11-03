@@ -251,21 +251,12 @@ li {
   resize: none;
 }
 
-.terms {
-  display: inherit;
-}
-
-textarea {
-  width: 100%;
-}
-
-input[type="radio"] {
-  margin-right: 5px;
-}
-
-.buttons {
-  text-align: center;
-}
+.input { width: 100%; }
+.input-wrap { flex-basis: 70%; }
+.terms { display: inherit; }
+textarea { width: 100%; }
+input[type="radio"] { margin-right: 5px; }
+.buttons { text-align: center; }
 
 .btn {
   padding: 10px 20px;
@@ -303,9 +294,7 @@ input[type="radio"] {
   text-transform: capitalize;
 }
 
-.row:first-child {
-  font-weight: 900;
-}
+.row:first-child { font-weight: 900; }
 
 button {
   width: 50px;
@@ -314,7 +303,7 @@ button {
 }
 
 .error {
-  display: block;
+  display: block; 
   color: #d20b0b;
 } 
 /*=================================
