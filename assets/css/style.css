@@ -251,14 +251,6 @@ li {
   resize: none;
 }
 
-.input-wrap {
-  flex-basis: 70%;
-}
-
-.input {
-  width: 100%;
-}
-
 .terms {
   display: inherit;
 }
@@ -319,11 +311,6 @@ button {
   width: 50px;
   height: 20px;
   background-color: #777;
-}
-
-.error {
-  display: block;
-  color: #d20b0b;
 }
 
 
