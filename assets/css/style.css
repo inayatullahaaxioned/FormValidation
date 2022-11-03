@@ -313,7 +313,10 @@ button {
   background-color: #777;
 }
 
-
+.error {
+  display: block;
+  color: #d20b0b;
+} 
 /*=================================
   main styling ends here
 =================================*/
