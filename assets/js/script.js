@@ -3,10 +3,6 @@ Inayatullah
 */
 //Grabbing element
 var form = document.querySelector('#form'),
-  firstname = document.querySelector('#firstname'),
-  lastname = document.querySelector('#lastname'),
-  gender = form.gender,
-  address = document.querySelector('#address'),
   checkbox = document.querySelector("#terms"),
   isEdit = false,
   editRow;
@@ -16,19 +12,24 @@ var submitBtn = document.querySelector('.submit-btn'),
   cancelBtn = document.querySelector('.cancel-btn');
 //regex 
 var NameRegex = /^[A-Za-z]+$/;
-var AddressRegex = /^[a-z0-9 ,.'-]+$/i;
+var AddressRegex = /^[a-z0-9,.'-]+$/i;
 
 form.addEventListener('submit', validateForm);
 
 function validateForm(e) {
   e.preventDefault();
+  var firstname = document.querySelector('#firstname'),
+    lastname = document.querySelector('#lastname'),
+    gender = form.gender,
+    address = document.querySelector('#address');
+
   validateInput(firstname, NameRegex);
   validateInput(lastname, NameRegex);
   validateInput(address, AddressRegex);
   validateCheckbox(checkbox);
   var checkGender = validateGender(gender);
 
-  if (firstname.value && lastname.value && (male.checked || female.checked) && address.value && checkbox.checked) {
+  if (firstname.value && lastname.value && (gender[0].checked || gender[1].checked) && address.value && checkbox.checked) {
     var userData = {
       fname: firstname.value,
       lname: lastname.value,
@@ -61,44 +62,37 @@ function validateForm(e) {
 //validation function for fname,lname and address
 function validateInput(input, regex) {
   var fname = input.value;
-  var errorSpan = document.createElement('span');
-  errorSpan.className = 'error';
   var inputWrap = input.parentElement;
   var error = inputWrap.querySelector('.error');
   if (error) {
     error.remove();
   }
-  inputWrap.appendChild(errorSpan);
+  // inputWrap.appendChild(errorSpan);
   if (input.value == "") {
-    errorSpan.innerText = '*field is required';
+    appendSpan(input, '*field is required');
   } else if (fname.length < 4) {
-    errorSpan.innerText = "*It should have atleast 4 character";
+    appendSpan(input, '"*It should have atleast 4 character"');
   } else if (regex.test(input.value) == false) {
-    errorSpan.innerText = "*Please enter valid " + input.name;
-  } else {
-    inputWrap.removeChild(errorSpan);
+    appendSpan(input, `*Please enter valid  ${input.name}`);
   }
 }
+
 //validating gender
 function validateGender(gender) {
   var valid = false;
   var inputWrap = document.querySelector("#male").parentElement;
-  var errorSpan = document.createElement('span');
-  errorSpan.className = 'error';
-  inputWrap.appendChild(errorSpan);
   var error = inputWrap.querySelector('.error');
-  for (let i = 0; i < gender.length; i++) {
-    if (gender[i].checked) {
-      valid = true;
-      if (valid) {
-        error.remove();
-        return gender[i].value;
-      }
-    } else {
-      error.innerText = "Please select your gender";
-    }
+  if (error) {
+    error.remove();
+  }
+  if (gender[0].checked || gender[1].checked) {
+    return gender[0].checked ? gender[0].value : gender[1].value;
+  } else {
+    appendSpan(gender[0], "Please select your gender");
   }
 }
+
+
 //validating checkbox
 function validateCheckbox(input) {
   var inputWrap = input.parentElement;
@@ -107,10 +101,7 @@ function validateCheckbox(input) {
     inputWrap.removeChild(error);
   }
   if (checkbox.checked == false) {
-    var errorSpan = document.createElement('span');
-    errorSpan.className = 'error';
-    inputWrap.appendChild(errorSpan);
-    errorSpan.innerText = "Please agree the Terms & Conditions";
+    appendSpan(input, 'Please agree the Terms & Conditions');
   }
 }
 
@@ -171,10 +162,12 @@ function EditData() {
   })
 }
 
+//function for deleting the data from table
 function DeleteData() {
   this.parentElement.parentElement.remove();
 }
 
+//function for edit the data in table
 function EditFunc() {
   editRow.children[0].innerText = firstname.value;
   editRow.children[1].innerText = lastname.value;
@@ -185,4 +178,14 @@ function EditFunc() {
     }
   })
   isEdit = false;
+}
+
+//function for append the error span
+function appendSpan(input, errorMsg) {
+  var errorSpan = document.createElement('span');
+  errorSpan.className = 'error';
+  var inputWrap = input.parentElement;
+  inputWrap.appendChild(errorSpan);
+  console.log('appended');
+  errorSpan.innerText = errorMsg;
 }
