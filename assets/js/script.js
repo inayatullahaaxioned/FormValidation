@@ -89,7 +89,7 @@ function validateInput(input, regex) {
 //validating gender
 function validateGender(gender) {
   var valid = false;
-  var inputWrap = document.querySelector("#male").parentElement.parentElement;
+  var inputWrap = document.querySelector("#male").parentElement;
   var errorSpan = document.createElement('span');
   errorSpan.className = 'error';
   inputWrap.appendChild(errorSpan);
