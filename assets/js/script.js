@@ -4,8 +4,15 @@ Inayatullah
 //Grabbing element
 var form = document.querySelector('#form'),
   checkbox = document.querySelector("#terms"),
+  gender = form.gender,
   isEdit = false,
-  editRow;
+  editRow,
+  firstname = document.querySelector('#firstname'),
+  lastname = document.querySelector('#lastname'),
+  address = document.querySelector('#address'),
+  editId = null;
+var data = JSON.parse(localStorage.getItem('userData'));
+var dataStore = data ? data : [];
 
 //Grabbing buttons 
 var submitBtn = document.querySelector('.submit-btn'),
@@ -18,11 +25,6 @@ form.addEventListener('submit', validateForm);
 
 function validateForm(e) {
   e.preventDefault();
-  var firstname = document.querySelector('#firstname'),
-    lastname = document.querySelector('#lastname'),
-    gender = form.gender,
-    address = document.querySelector('#address');
-
   validateInput(firstname, NameRegex);
   validateInput(lastname, NameRegex);
   validateInput(address, AddressRegex);
@@ -37,13 +39,16 @@ function validateForm(e) {
       address: address.value,
       checkbox: checkbox.checked,
     }
-    if (isEdit) {
-      EditFunc();
+    if (editId != null) {
+      dataStore[editId] = userData;
+      submitBtn.value = 'Submit';
     } else {
-      display(userData);
+      dataStore.push(userData);
     }
+    editId = null;
+    storeData(dataStore);
+    display(dataStore);
     alert('form is submitted');
-
 
     firstname.value = "";
     lastname.value = "";
@@ -59,6 +64,10 @@ function validateForm(e) {
   }
 
 }
+
+//displaying the data from local storage
+display(dataStore);
+
 //validation function for fname,lname and address
 function validateInput(input, regex) {
   var fname = input.value;
@@ -67,7 +76,6 @@ function validateInput(input, regex) {
   if (error) {
     error.remove();
   }
-  // inputWrap.appendChild(errorSpan);
   if (input.value == "") {
     appendSpan(input, '*field is required');
   } else if (fname.length < 4) {
@@ -79,7 +87,6 @@ function validateInput(input, regex) {
 
 //validating gender
 function validateGender(gender) {
-  var valid = false;
   var inputWrap = document.querySelector("#male").parentElement;
   var error = inputWrap.querySelector('.error');
   if (error) {
@@ -91,7 +98,6 @@ function validateGender(gender) {
     appendSpan(gender[0], "Please select your gender");
   }
 }
-
 
 //validating checkbox
 function validateCheckbox(input) {
@@ -108,33 +114,47 @@ function validateCheckbox(input) {
 //display function for showing data in table
 function display(dataList) {
   var table = document.querySelector('.table');
-  var list = document.createElement('li'),
-    ul = document.createElement('ul');
-  ul.classList.add('cols');
-  list.classList.add('row');
-  var data = [dataList.fname, dataList.lname, dataList.gender, dataList.address];
-  for (var i = 0; i < 6; i++) {
-    var li = document.createElement('li');
-    li.classList.add('col');
-    if (i < 4) {
-      li.innerText = data[i];
-    } else {
-      var Btn = document.createElement('button');
-      if (i == 4) {
-        Btn.classList.add('edit-btn');
-        Btn.innerText = "Edit";
-        Btn.addEventListener('click', EditData);
-      } else {
-        Btn.classList.add('delete-btn');
-        Btn.innerText = "Delete";
-        Btn.addEventListener('click', DeleteData);
-      }
-      li.appendChild(Btn);
-    }
-    ul.appendChild(li);
-  }
-  list.appendChild(ul);
-  table.appendChild(list);
+  var tableHead = table.children[0].cloneNode(true);
+  table.innerHTML = '';
+  table.appendChild(tableHead);
+  dataList.forEach(function (data) {
+    var list = document.createElement('li');
+    list.classList.add('row', "abc");
+    list.innerHTML = `<ul class="cols">
+                        <li class="col fname-data">${data.fname}</li>
+                        <li class="col lname-data">${data.lname}</li>
+                        <li class="col gender-data">${data.gender}</li>
+                        <li class="col address-data">${data.address}</li>
+                        <li class="col"><button class="edit-btn">Edit</button></li>
+                        <li class="col"><button class="delete-btn">Delete</button></li>
+                      </ul>`;
+    table.appendChild(list);
+
+  });
+  // addEventListener
+  var editBtn = document.querySelectorAll('.edit-btn'),
+    deleteBtn = document.querySelectorAll('.delete-btn');
+
+  editBtn.forEach(function (edit, idx) {
+    edit.addEventListener('click', function () {
+      submitBtn.value = "Update";
+      var rowData = this.parentElement.parentElement.children;
+      firstname.value = rowData[0].innerText;
+      lastname.value = rowData[1].innerText;
+      address.value = rowData[3].innerText;
+      gender.value = rowData[2].innerText;
+      checkbox.checked = true;
+      editId = idx;
+    });
+  })
+
+  deleteBtn.forEach(function (list, idx) {
+    list.addEventListener('click', function () {
+      dataStore.splice(idx, 1)
+      storeData(dataStore);
+      display(dataStore);
+    })
+  });
 }
 
 //cancel btn form reset
@@ -147,39 +167,6 @@ function formReset() {
   })
 }
 
-function EditData() {
-  isEdit = true;
-  var parent = this.parentElement.parentElement;
-  editRow = parent;
-  firstname.value = parent.children[0].innerText;
-  lastname.value = parent.children[1].innerText;
-  address.value = parent.children[3].innerText;
-  checkbox.checked = true;
-  gender.forEach(function (input) {
-    if (input.value == parent.children[2].innerText) {
-      input.checked = true;
-    }
-  })
-}
-
-//function for deleting the data from table
-function DeleteData() {
-  this.parentElement.parentElement.remove();
-}
-
-//function for edit the data in table
-function EditFunc() {
-  editRow.children[0].innerText = firstname.value;
-  editRow.children[1].innerText = lastname.value;
-  editRow.children[3].innerText = address.value;
-  gender.forEach(function (input) {
-    if (input.checked) {
-      editRow.children[2].innerText = input.value;
-    }
-  })
-  isEdit = false;
-}
-
 //function for append the error span
 function appendSpan(input, errorMsg) {
   var errorSpan = document.createElement('span');
@@ -188,4 +175,9 @@ function appendSpan(input, errorMsg) {
   inputWrap.appendChild(errorSpan);
   console.log('appended');
   errorSpan.innerText = errorMsg;
+}
+
+//pushing data local storage 
+function storeData(input) {
+  localStorage.setItem('userData', JSON.stringify(input));
 }
