@@ -30,8 +30,9 @@ function validateForm(e) {
   validateInput(address, AddressRegex);
   validateCheckbox(checkbox);
   var checkGender = validateGender(gender);
+  var error = document.querySelectorAll('.error');
 
-  if (firstname.value && lastname.value && (gender[0].checked || gender[1].checked) && address.value && checkbox.checked) {
+  if (error.length == 0) {
     var userData = {
       fname: firstname.value,
       lname: lastname.value,
@@ -173,7 +174,6 @@ function appendSpan(input, errorMsg) {
   errorSpan.className = 'error';
   var inputWrap = input.parentElement;
   inputWrap.appendChild(errorSpan);
-  console.log('appended');
   errorSpan.innerText = errorMsg;
 }
 
